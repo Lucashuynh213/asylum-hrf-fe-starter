@@ -1,21 +1,14 @@
 import { Auth0Provider } from '@auth0/auth0-react';
 import { useNavigate } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { useCallback } from 'react';
 
 export const Auth0ProviderWithConfig = ({ children }) => {
   const navigate = useNavigate();
   const domain = process.env.REACT_APP_AUTH0_DOMAIN;
   const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
 
-  if (!domain || !clientId) {
-    console.error('Missing Auth0 domain or clientId. Please check your environment variables.');
-    return null;
-  }
-
-  const onRedirectCallback = useCallback((appState) => {
+  const onRedirectCallback = (appState) => {
     navigate(appState?.returnTo || window.location.pathname);
-  }, [navigate]);
+  };
 
   return (
     <Auth0Provider
@@ -29,8 +22,4 @@ export const Auth0ProviderWithConfig = ({ children }) => {
       {children}
     </Auth0Provider>
   );
-};
-
-Auth0ProviderWithConfig.propTypes = {
-  children: PropTypes.node.isRequired,
 };
